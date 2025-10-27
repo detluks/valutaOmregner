@@ -12,6 +12,7 @@ class Model:
     
     def get_valutas(self):
         response = requests.get(self.url)
+        soup = BeautifulSoup(response.text)
 
 
 
@@ -46,7 +47,7 @@ if __name__ == "__main__":
     root.title("Valuta omregner")
     root.geometry("400x150")
 
-    model = Model()
+    model = Model("https://valutaomregneren.dk/")
     view = View(root)
     controller = Controller(model, view)
     view.set_controller(controller)
