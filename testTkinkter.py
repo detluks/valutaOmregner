@@ -17,7 +17,7 @@ frame_top.pack(pady=20)
 
 # Beløb venstre
 left_amount_var = tk.StringVar()
-left_entry = tk.Entry(frame_top, textvariable=left_amount_var, font=("Arial", 20), width=10, relief="solid", justify="center")
+left_entry = tk.Entry(frame_top, textvariable=left_amount_var, font=("Arial", 20), width=10, relief="solid", justify="center",bg="white")
 left_entry.grid(row=0, column=0, padx=10)
 
 tk.Label(frame_top, text="USD", font=("Arial", 20), bg="white").grid(row=0, column=1, padx=10)
@@ -26,7 +26,7 @@ tk.Label(frame_top, text="DKK", font=("Arial", 20), bg="white").grid(row=0, colu
 
 # Beløb højre
 right_amount_var = tk.StringVar()
-right_entry = tk.Entry(frame_top, textvariable=right_amount_var, font=("Arial", 20), width=10, relief="solid", justify="center")
+right_entry = tk.Entry(frame_top, textvariable=right_amount_var, font=("Arial", 20), width=10, relief="solid", justify="center",bg="white")
 right_entry.grid(row=0, column=4, padx=10)
 
 # ---- Valutakurser sektion ----
