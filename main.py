@@ -3,6 +3,8 @@ from tkinter import ttk
 import requests
 from bs4 import BeautifulSoup
 import csv
+import os
+data = ["code", "rate", "desc"]
 
 
 # model
@@ -11,8 +13,24 @@ class Model:
         self.url = url
     
     def get_valutas(self):
-        response = requests.get(self.url)
-        soup = BeautifulSoup(response.text)
+      response = requests.get(self.url)
+      soup = BeautifulSoup(response.text, "xml") 
+      dato = soup.dailyrates["id"]
+      os.makedirs(f"saves/{dato}", exist_ok=True)
+
+      for i in range(len(data)):
+        csv_path = f"saves/{dato}/{data[i]}"
+        with open(csv_path, mode="w", newline="", encoding="utf-8") as file:
+            writer = csv.writer(file)
+            for cur in soup.find_all("currency"):
+                linje = []
+                if data[i] == "rate":
+                    rate = cur["rate"].replace(",", ".")
+                    linje.append(float(rate))
+                else:
+                    spekData = cur[data[i]]
+                    linje.append(spekData)
+                writer.writerow(linje)
 
 
 
@@ -47,9 +65,10 @@ if __name__ == "__main__":
     root.title("Valuta omregner")
     root.geometry("400x150")
 
-    model = Model("https://valutaomregneren.dk/")
+    model = Model("https://www.nationalbanken.dk/api/currencyratesxml?lang=da")
     view = View(root)
     controller = Controller(model, view)
     view.set_controller(controller)
+    model.get_valutas()
 
     root.mainloop()
