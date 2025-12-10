@@ -33,7 +33,7 @@ def konverter():
 
     # Omregning: først til DKK, så til målvaluta
     resultat = (beløb * kurser[fra])/kurser[til] 
-    #resultat = beløb_i_dkk / (kurser[til] / 100)
+    
 
     right_amount_var.set(f"{resultat:.2f}")
 
@@ -94,18 +94,18 @@ def make_row(parent, valuta, kode, ændring, kurs):
     tk.Label(row, text=kurs, font=("Arial", 16), relief="solid", width=widthBoks, bg="white").pack(side="right")
 
 # Første række: Euro
-make_row(frame_rates, "Euro", "EUR", "0.4% ↑", "804.29")
+make_row(frame_rates, "Euro", "EUR", "0.4% ↑", kurser["EUR"])
 
 # Anden række: SEK
-make_row(frame_rates, "Svenske Kroner", "SEK", "0.1% ↑", "68.06")
+make_row(frame_rates, "Svenske Kroner", "SEK", "0.1% ↑", kurser["SEK"])
 
 # Tredje række: GBP
-make_row(frame_rates, "Britiske Pund", "GBP", "-0.3% ↓", "848.24")
+make_row(frame_rates, "Britiske Pund", "GBP", "-0.3% ↓", kurser["GBP"])
 
 # Fjerde række: USD
-make_row(frame_rates, "Amerikanske Dollar", "USD", "-0.0% ↓", "689.10")
+make_row(frame_rates, "Amerikanske Dollar", "USD", "-0.0% ↓", kurser["USD"])
 
 # Femte række: CHF
-make_row(frame_rates, "Schweiziske Franc", "CHF", "0.4% ↑", "804.90")
+make_row(frame_rates, "Schweiziske Franc", "CHF", "0.4% ↑", kurser["CHF"])
 
 root.mainloop()
