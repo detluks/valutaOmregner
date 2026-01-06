@@ -95,6 +95,6 @@ if __name__ == "__main__":
     view = View(root)
     controller = Controller(model, view)
     view.set_controller(controller)
-    model.get_valutas()
+    model.getValutas()
 
     root.mainloop()
