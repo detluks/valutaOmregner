@@ -109,3 +109,5 @@ make_row(frame_rates, "Amerikanske Dollar", "USD", "-0.0% ↓", kurser["USD"])
 make_row(frame_rates, "Schweiziske Franc", "CHF", "0.4% ↑", kurser["CHF"])
 
 root.mainloop()
+
+
