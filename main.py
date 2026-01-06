@@ -12,7 +12,7 @@ class Model:
     def __init__(self, url=""):
         self.url = url
     
-    def get_valutas(self):
+    def getValutas(self):
       response = requests.get(self.url)
       soup = BeautifulSoup(response.text, "xml") 
       dato = soup.dailyrates["id"]
@@ -31,6 +31,32 @@ class Model:
                     spekData = cur[data[i]]
                     linje.append(spekData)
                 writer.writerow(linje)
+    
+    def dataFraDato(self, dato):
+        dicdic = {}
+        codes = []
+        for i in range(3):
+            filePath = f"saves/{dato}/{data[i]}"
+            with open(filePath, newline="", encoding="utf-8") as f:
+                reader = csv.reader(f)
+                if i == 0:
+                    for row in reader:
+                        dicdic[",".join(row)] = {'desc':'','rate':''}
+                        codes.append(",".join(row))
+                else:
+                    k = 0
+                    for row in reader:
+                        dicdic[codes[k]][data[i]] = ",".join(row)
+                        k+=1
+        return dicdic
+
+    def getDatoer(self):
+        savesPath = "saves"
+        datoer = [
+            dato for dato in os.listdir(savesPath)
+            if os.path.isdir(os.path.join(savesPath, dato))
+        ]
+        return datoer
 
 
 
