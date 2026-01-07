@@ -22,6 +22,7 @@ class Model:
         csv_path = f"saves/{dato}/{data[i]}"
         with open(csv_path, mode="w", newline="", encoding="utf-8") as file:
             writer = csv.writer(file)
+            
             for cur in soup.find_all("currency"):
                 linje = []
                 if data[i] == "rate":
@@ -31,6 +32,7 @@ class Model:
                     spekData = cur[data[i]]
                     linje.append(spekData)
                 writer.writerow(linje)
+
     
     def dataFraDato(self, dato):
         dicdic = {}
@@ -53,6 +55,7 @@ class Model:
                         for row in reader:
                             dicdic[codes[k]][data[i]] = ",".join(row)
                             k+=1
+        dicdic["DKK"]={'desc':"Danske kroner", 'rate': 100}
         return dicdic
 
     def getDatoer(self):
@@ -99,7 +102,7 @@ class View(ttk.Frame):
         til = self.right_currency_var.get()
 
         # Omregning: først til DKK, så til målvaluta
-        resultat = (beløb * self.dicdic[fra]["rate"])/self.dicdic[til]["rate"] 
+        resultat = (beløb * self.dicdic[fra]["rate"])/(self.dicdic[til]["rate"]) 
         
 
         self.right_amount_var.set(f"{resultat:.2f}")
@@ -150,7 +153,7 @@ class View(ttk.Frame):
         frame_rates.pack(pady=30)
 
         # Funktion til at lave en række
-        def make_row(parent, valuta, kode, ændring, kurs):
+        def make_row(parent, valuta, kode, kurs):
             row = tk.Frame(parent, bg="white")
             row.pack(pady=5, fill="x", padx=50)
 
@@ -158,23 +161,22 @@ class View(ttk.Frame):
 
             tk.Label(row, text=valuta, font=("Arial", 16), relief="solid", width=18, bg="white").pack(side="left")
             tk.Label(row, text=kode, font=("Arial", 16), relief="solid", width=widthBoks, bg="white").pack(side="left")
-            tk.Label(row, text=ændring, font=("Arial", 16), relief="solid", width=widthBoks, fg="green" if "↑" in ændring else "red", bg="white").pack(side="left", expand=True)
             tk.Label(row, text=kurs, font=("Arial", 16), relief="solid", width=widthBoks, bg="white").pack(side="right")
 
         # Første række: Euro
-        make_row(frame_rates, "Euro", "EUR", "0.4% ↑", self.dicdic["EUR"]["rate"])
+        make_row(frame_rates, "Euro", "EUR", self.dicdic["EUR"]["rate"])
 
         # Anden række: SEK
-        make_row(frame_rates, "Svenske Kroner", "SEK", "0.1% ↑", self.dicdic["SEK"]["rate"])
+        make_row(frame_rates, "Svenske Kroner", "SEK", self.dicdic["SEK"]["rate"])
 
         # Tredje række: GBP
-        make_row(frame_rates, "Britiske Pund", "GBP", "-0.3% ↓", self.dicdic["GBP"]["rate"])
+        make_row(frame_rates, "Britiske Pund", "GBP", self.dicdic["GBP"]["rate"])
 
         # Fjerde række: USD
-        make_row(frame_rates, "Amerikanske Dollar", "USD", "-0.0% ↓", self.dicdic["USD"]["rate"])
+        make_row(frame_rates, "Amerikanske Dollar", "USD", self.dicdic["USD"]["rate"])
 
         # Femte række: CHF
-        make_row(frame_rates, "Schweiziske Franc", "CHF", "0.4% ↑", self.dicdic["CHF"]["rate"])
+        make_row(frame_rates, "Schweiziske Franc", "CHF", self.dicdic["CHF"]["rate"])
 
 
 
@@ -194,7 +196,7 @@ if __name__ == "__main__":
     model = Model("https://www.nationalbanken.dk/api/currencyratesxml?lang=da")
     model.getValutas()
     datoer=model.getDatoer()
-    dicdic = model.dataFraDato(datoer[0])
+    dicdic = model.dataFraDato(datoer[len(datoer)-1])
     view = View(root,dicdic)
     view.pack(fill="both", expand=True)
     controller = Controller(model, view)
